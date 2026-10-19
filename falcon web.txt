@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mata Egale - Official Website</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            transition: none !important;
+            animation: none !important;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Age Verification Screen (First Screen) */
+        #ageScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #4f46e5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 5000;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .age-card {
+            background: white;
+            color: #1f2937;
+            padding: 35px 25px;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .age-card h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #1f2937;
+        }
+
+        .age-card p {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .age-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .age-btn {
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .age-btn.yes {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .age-btn.no {
+            background: #ef4444;
+            color: white;
+        }
+
+        .age-error {
+            color: #dc2626;
+            font-size: 13px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* Initial Landing / Choice Screen */
+        #landingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #4f46e5;
+            display: none; /* Hidden until age is verified */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .landing-logo {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .landing-subtitle {
+            font-size: 16px;
+            margin-bottom: 30px;
+            color: #e0e7ff;
+        }
+
+        .choice-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .choice-btn {
+            background: white;
+            color: #4f46e5;
+            padding: 12px 30px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .choice-btn.admin {
+            background: #1f2937;
+            color: white;
+        }
+
+        /* Main Website Wrapper */
+        #websiteWrapper {
+            display: none;
+        }
+
+        /* Header / Navbar */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #4f46e5;
+            text-decoration: none;
+        }
+
+        /* Header Login/Signup Options Container */
+        .auth-options {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .auth-btn {
+            background: #f3f4f6;
+            color: #4f46e5;
+            border: 1px solid #d1d5db;
+            padding: 6px 14px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .auth-btn.signup {
+            background: #4f46e5;
+            color: white;
+            border: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .back-landing-btn {
+            background: #ef4444;
+            color: white !important;
+            padding: 6px 14px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            background: #4f46e5;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            margin-top: 55px;
+        }
+
+        .hero-content h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-content p {
+            font-size: 16px;
+            margin-bottom: 25px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #ffffff;
+            color: #4f46e5;
+            padding: 10px 25px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Features Section */
+        .features {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 30px;
+            margin-bottom: 40px;
+            color: #1f2937;
+        }
+
+        .feature-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+        }
+
+        .feature-card i {
+            font-size: 32px;
+            color: #4f46e5;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* Modal Popup Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 4000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 380px;
+            position: relative;
+            text-align: left;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 22px;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 15px;
+            color: #1f2937;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .login-submit-btn {
+            width: 100%;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .error-msg {
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        /* Admin Dashboard View */
+        .admin-dashboard {
+            display: none;
+            padding: 100px 20px 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 60px;
+        }
+
+        footer p {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        /* Responsive design adjustments */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .auth-options {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Age Verification Screen (Appears first) -->
+    <div id="ageScreen">
+        <div class="age-card">
+            <h2>Age Verification</h2>
+            <p>ඔබේ වයස අවුරුදු 18ට වැඩි ද නැත්නම් 18 අඩු ද?</p>
+            <div class="age-buttons">
+                <button class="age-btn yes" onclick="verifyAge(true)">අවුරුදු 18+ වැඩි</button>
+                <button class="age-btn no" onclick="verifyAge(false)">අවුරුදු 18 අඩුයි</button>
+            </div>
+            <div id="ageError" class="age-error">මෙම වෙබ් අඩවියට පිවිසීමට ඔබට අවුරුදු 18ක් සම්පූර්ණ විය යුතුය.</div>
+        </div>
+    </div>
+
+    <!-- Initial Landing Screen -->
+    <div id="landingScreen">
+        <div class="landing-logo">Mata Egale</div>
+        <p class="landing-subtitle">Please select your login type to continue</p>
+        <div class="choice-buttons">
+            <button class="choice-btn admin" onclick="openAdminModal()"><i class="fas fa-lock"></i> Admin Login</button>
+            <button class="choice-btn" onclick="loginAsGuest()"><i class="fas fa-user"></i> Guest Login</button>
+        </div>
+    </div>
+
+    <!-- Main Website Wrapper -->
+    <div id="websiteWrapper">
+        <!-- Header / Navbar -->
+        <header>
+            <div class="nav-container">
+                <a href="#" class="logo">Mata Egale</a>
+                
+                <!-- Sign In & Login Options (placed right after the logo on the left side) -->
+                <div class="auth-options">
+                    <button class="auth-btn" onclick="openAdminModal()">Login</button>
+                    <button class="auth-btn signup" onclick="openAdminModal()">Sign In</button>
+                </div>
+
+                <div class="nav-menu">
+                    <ul class="nav-links" id="navLinksList">
+                        <li><a href="#" onclick="showMainSite()">Home</a></li>
+                        <li><a href="#" onclick="showMainSite()">About</a></li>
+                        <li><a href="#" onclick="showMainSite()">Services</a></li>
+                        <li><a href="#" onclick="showMainSite()">Contact</a></li>
+                    </ul>
+                    <a class="back-landing-btn" onclick="returnToLanding()"><i class="fas fa-sign-out-alt"></i> Exit</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Website Content Container -->
+        <div id="mainWebsiteContent">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Welcome to Mata Egale</h1>
+                    <p>Your ultimate destination for creative ideas, modern web solutions, and endless possibilities.</p>
+                    <a href="#" class="btn">Get Started</a>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features">
+                <h2>Why Choose Us?</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Fast & Responsive</h3>
+                        <p>Optimized for speed and seamless experience across all devices and screen sizes.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Secure & Reliable</h3>
+                        <p>Built with modern security standards to keep your data safe and protected.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-headset"></i>
+                        <h3>24/7 Support</h3>
+                        <p>Our dedicated support team is always ready to assist you anytime you need help.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" class="admin-dashboard">
+            <div class="dashboard-card">
+                <div class="dashboard-header">
+                    <h2><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
+                </div>
+                <p>Welcome back, Admin! You are successfully logged in with username <strong>1212</strong> and password <strong>1212</strong>.</p>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #e5e7eb;">
+                <p style="color: #6b7280; font-size: 13px;">Here you can manage your website settings, view analytical reports, and update user preferences.</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 Mata Egale. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Admin Login</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username (1212)" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password (1212)" required>
+                </div>
+                <div id="errorMsg" class="error-msg">Invalid username or password!</div>
+                <button type="submit" class="login-submit-btn" style="margin-top: 5px;">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const ageScreen = document.getElementById('ageScreen');
+        const landingScreen = document.getElementById('landingScreen');
+        const websiteWrapper = document.getElementById('websiteWrapper');
+        const modal = document.getElementById('loginModal');
+        const mainContent = document.getElementById('mainWebsiteContent');
+        const adminDashboard = document.getElementById('adminDashboard');
+        const ageError = document.getElementById('ageError');
+
+        function verifyAge(isAbove18) {
+            if (isAbove18) {
+                ageScreen.style.display = 'none';
+                landingScreen.style.display = 'flex';
+            } else {
+                ageError.style.display = 'block';
+            }
+        }
+
+        function openAdminModal() {
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.getElementById('errorMsg').style.display = 'none';
+            document.getElementById('loginForm').reset();
+        }
+
+        function loginAsGuest() {
+            landingScreen.style.display = 'none';
+            websiteWrapper.style.display = 'block';
+            mainContent.style.display = 'block';
+            adminDashboard.style.display = 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (user === '1212' && pass === '1212') {
+                closeModal();
+                landingScreen.style.display = 'none';
+                websiteWrapper.style.display = 'block';
+                mainContent.style.display = 'none';
+                adminDashboard.style.display = 'block';
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function returnToLanding() {
+            websiteWrapper.style.display = 'none';
+            landingScreen.style.display = 'flex';
+            document.getElementById('loginForm').reset();
+        }
+
+        function showMainSite() {
+            adminDashboard.style.display = 'none';
+            mainContent.style.display = 'block';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+
+</body>
+</html>
